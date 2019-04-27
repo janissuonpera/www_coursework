@@ -1,0 +1,19 @@
+{
+  "name": "www_coursework",
+  "version": "1.0.0",
+  "description": "Package for React and Express \u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Cmy \u001b[C\u001b[DE\u001b[2React and Express app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/janissuonpera/www_coursework.git"
+  },
+  "author": "Janis Suonperä",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/janissuonpera/www_coursework/issues"
+  },
+  "homepage": "https://github.com/janissuonpera/www_coursework#readme"
+}
