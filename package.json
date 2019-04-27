@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/janissuonpera/www_coursework/issues"
   },
-  "homepage": "https://github.com/janissuonpera/www_coursework#readme"
+  "homepage": "https://github.com/janissuonpera/www_coursework#readme",
+  "dependencies": {
+    "concurrently": "^4.1.0",
+    "express": "^4.16.4"
+  }
 }
