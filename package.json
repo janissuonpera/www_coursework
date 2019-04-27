@@ -1,7 +1,7 @@
 {
   "name": "www_coursework",
   "version": "1.0.0",
-  "description": "Package for React and Express \u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Cmy \u001b[C\u001b[DE\u001b[2React and Express app",
+  "description": "Package for React and Express my React and Express app",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,5 +19,8 @@
   "dependencies": {
     "concurrently": "^4.1.0",
     "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.11"
   }
 }
