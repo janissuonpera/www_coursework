@@ -1,4 +1,5 @@
 # Change history (descending order from newest to oldest):
+- MVC structure and MongoDB somewhat working. Template engine also in use.
 - "npm run client-install" installs react dependencies in client folder from its package.json file
 - Use npm run dev to run client and server concurrently
 - Added port 5000 as proxy to react app's package.json
