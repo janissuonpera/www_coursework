@@ -22,8 +22,14 @@
   },
   "homepage": "https://github.com/janissuonpera/www_coursework#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
     "concurrently": "^4.1.0",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "express-hbs": "^2.1.2",
+    "express-validator": "^5.3.1",
+    "helmet": "^3.16.0",
+    "mongoose": "^5.5.4"
   },
   "devDependencies": {
     "nodemon": "^1.18.11"

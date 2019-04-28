@@ -1,18 +1,23 @@
 //Requires
 const express = require('express');
+const bodyParser = require('body-parser');
+const hbs = require('express-hbs');
+const helmet = require('helmet');
+const router = require('./router');
 
 //Initialize express app
 const app = express();
 
-app.get('/api/users', (req, res)=>{
-  //Hardcoded array of users, change this to use mongoDB later
-  const users = [
-    {id: 1, firstName: 'Janis', lastName: 'Suonperä', admin: true},
-    {id: 2, firstName: 'Tibe', lastName: 'Stöö', admin: false},
-    {id: 3, firstName: 'Teme', lastName: 'The SaliBeast', admin: false}
-  ];
-  res.json(users);
-});
+//Setting up handlebars and views for mvc
+app.engine('hbs', hbs.express4());
+app.set('view engine', 'hbs');
+app.set('views', __dirname);
+
+//Use middleware
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
+
+app.use("/", router);
 
 //Using port 5000 because create-react-app uses port 3000
 const port = 5000;
