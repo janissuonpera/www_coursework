@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 <title>Joining</title>
 <style>
@@ -30,19 +29,18 @@
 
 <body>
 
-<h1>Create an account</h1>
-<h3>Please, choose the username and password you would like to use.</h3>
-<form action="/user/new_user" method="post">
+<h1>Log in</h1>
+<h3>Please enter your username and password.</h3>
+<form action="/user" method="post">
   Username: <input type="text" name="username"><br>
   Password: <input type="password" name="password"><br>
   <input type="submit" value="Submit">
 </form>
 {{this.message}}
-
 <h3>
-  If you already have an account, you can log in here:
-  <form action="/user" method="get">
-    <input type="submit" value="Log in" />
+  If you don't already have an account, you can create one here:
+  <form action="/user/new_user" method="get">
+    <input type="submit" value="Create user" />
   </form>
 </h3>
 </body>
