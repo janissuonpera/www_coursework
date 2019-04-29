@@ -15,6 +15,11 @@ var User = mongoose.model('user', model.user_schema);
 const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
+//Renders a view for the front page
+exports.front_page = function(req, res, next){
+  res.render('front_page.hbs');
+}
+
 //Renders a view with form for creating a new user account
 exports.create_user = function(req, res, next) {
   res.render('create_user');

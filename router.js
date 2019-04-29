@@ -5,6 +5,9 @@ const { check, validationResult } = require('express-validator/check');
 //Importing the controller from controller.js
 const controller = require('./controller');
 
+//Front page of the application, 5 ects version
+router.get('/', controller.front_page);
+
 //Catch /users/new_user route and use controller.create_user to add new user to db
 router.get('/user/new_user', controller.create_user);
 
