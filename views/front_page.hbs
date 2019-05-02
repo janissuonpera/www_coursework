@@ -28,7 +28,9 @@
   <div id="navbar" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a href="/">Front page</a>
-    <a href="/user">Log in</a>
+    {{#unless this.logged_in}}
+      <a href="/user">Log in</a>
+    {{/unless}}
     {{#if this.registered}}
       <a href="/movies">Movies</a>
       <a href="/profile">Profile</a>
@@ -36,22 +38,26 @@
         <a href="/admin-page">Admin page</a>
       {{/if}}
     {{/if}}
-    <a href="/contanct">Contact</a>
+    <a href="/contact">Contact</a>
+    {{#if this.logged_in}}
+      <a href="">Logout</a>
+    {{/if}}
   </div>
   <span style="font-size:30px;cursor:pointer;" onclick="openNav()">&#9776; Menu</span>
   <h1 style="width:500px;margin:auto;">
     Welcome to <br>Janis Movie Club <br>homepage!
   </h1>
-
-  <h3>
-    If you already have an account, you can log in here:
-    <form action="/user" method="get">
-      <input type="submit" value="Log in" />
-    </form>
-    If you don't already have an account, you can create one here:
-      <form action="/user/new_user" method="get">
-        <input type="submit" value="Create user" />
+  {{#unless this.logged_in}}
+    <h3>
+      If you already have an account, you can log in here:
+      <form action="/user" method="get">
+        <input type="submit" value="Log in" />
       </form>
-  </h3>
+      If you don't already have an account, you can create one here:
+        <form action="/user/new_user" method="get">
+          <input type="submit" value="Create user" />
+        </form>
+    </h3>
+  {{/unless}}
 </body>
 </html>
