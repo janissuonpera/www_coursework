@@ -15,6 +15,9 @@ router.get('*', function(req, res, next){
 //Front page of the application, 5 ects version
 router.get('/', controller.front_page);
 
+//Log out router
+router.get('/logout', controller.log_out);
+
 //Catch /users/new_user route and use controller.create_user to add new user to db
 router.get('/user/new_user', controller.create_user);
 

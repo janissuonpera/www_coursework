@@ -108,3 +108,8 @@ exports.log_in_action = function(req, res, next){
     res.render('log_in.hbs', {message: "Invalid username or password."});
   }
 }
+
+exports.log_out = function(req, res, next){
+  req.session.destroy(function (err){console.log(err)});
+  res.redirect('/');
+}

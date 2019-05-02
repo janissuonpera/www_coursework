@@ -23,6 +23,7 @@
       open=false;
       document.getElementById("navbar").style.width = "0";
     }
+
   </script>
 
   <div id="navbar" class="sidenav">
@@ -40,7 +41,7 @@
     {{/if}}
     <a href="/contact">Contact</a>
     {{#if this.logged_in}}
-      <a href="">Logout</a>
+      <a href="/logout">Logout</a>
     {{/if}}
   </div>
   <span style="font-size:30px;cursor:pointer;" onclick="openNav()">&#9776; Menu</span>
