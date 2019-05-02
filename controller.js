@@ -72,6 +72,8 @@ exports.log_in_page = function(req, res, next){
   res.render('log_in.hbs');
 }
 
+//Action for logging the user in. Checks for validation error and compares
+//password to hashed password in db.
 exports.log_in_action = function(req, res, next){
   var username = req.body.username;
   var password = req.body.password;
@@ -109,6 +111,7 @@ exports.log_in_action = function(req, res, next){
   }
 }
 
+//Action for logging out. Destroys session and its properties
 exports.log_out = function(req, res, next){
   req.session.destroy(function (err){console.log(err)});
   res.redirect('/');
