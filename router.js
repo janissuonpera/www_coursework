@@ -5,6 +5,13 @@ const { check, validationResult } = require('express-validator/check');
 //Importing the controller from controller.js
 const controller = require('./controller');
 
+//Catch all routes and attach user credentials and admin status
+router.get('*', function(req, res, next){
+  res.locals.user = req.user || null;
+  res.locals.admin = req.admin || null;
+  next();
+});
+
 //Front page of the application, 5 ects version
 router.get('/', controller.front_page);
 

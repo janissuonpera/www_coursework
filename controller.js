@@ -17,7 +17,7 @@ const saltRounds = 10;
 
 //Renders a view for the front page
 exports.front_page = function(req, res, next){
-  res.render('front_page.hbs');
+  res.render('front_page.hbs', {registered: req.session.registered, admin: req.session.admin});
 }
 
 //Renders a view with form for creating a new user account
@@ -85,8 +85,15 @@ exports.log_in_action = function(req, res, next){
       if(user){
         bcrypt.compare(password, user.password, function(err, result){
           if(result){
-            console.log("logged in");
-            res.render('log_in.hbs', {message: "Logged in successfully!"});
+            //Grant different access rights depending on role in db
+            if(user.role == 'registered'){
+              req.session.registered = true;
+            }
+            if(user.role == 'admin'){
+              req.session.registered = true;
+              req.session.admin = true;
+            }
+            res.redirect('/');
           }else{
             res.render('log_in.hbs', {message: "Incorrect password."});
           }

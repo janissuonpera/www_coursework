@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Joining</title>
+<link rel="stylesheet" type="text/css" href="/view_style.css">
+</head>
+
+<body>
+  <script>
+    var open=false;
+    function openNav() {
+      if(!open){
+        document.getElementById("navbar").style.width = "250px";
+        open=true;
+      }else{
+        open=false;
+        closeNav();
+      }
+    }
+
+    function closeNav() {
+      open=false;
+      document.getElementById("navbar").style.width = "0";
+    }
+  </script>
+
+<div id="navbar" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="/">Front page</a>
+  <a href="/user">Log in</a>
+  <a href="/movies">Movies</a>
+  <a href="/profile">Profile</a>
+  <a href="/admin-page">Admin page</a>
+  <a href="/contanct">Contact</a>
+</div>
+<span style="font-size:30px;cursor:pointer;" onclick="openNav()">&#9776; Menu</span>
+
+<h1>Create an account</h1>
+<h3>Please, choose the username and password you would like to use.</h3>
+<form action="/user/new_user" method="post">
+  Username: <input type="text" name="username"><br>
+  Password: <input type="password" name="password"><br>
+  <input type="submit" value="Submit">
+</form>
+{{this.message}}
+
+<h3>
+  If you already have an account, you can log in here:
+  <form action="/user" method="get">
+    <input type="submit" value="Log in" />
+  </form>
+</h3>
+</body>
+</html>

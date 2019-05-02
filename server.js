@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const hbs = require('express-hbs');
 const helmet = require('helmet');
 const router = require('./router');
+const session = require('express-session');
 
 //Initialize express app
 const app = express();
@@ -11,11 +12,18 @@ const app = express();
 //Setting up handlebars and views for mvc
 app.engine('hbs', hbs.express4());
 app.set('view engine', 'hbs');
-app.set('views', __dirname);
+app.set('views', __dirname + '/views');
+app.use(express.static(__dirname + '/views'));
 
 //Use middleware
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
+
+app.use(session({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true
+}))
 
 app.use("/", router);
 
