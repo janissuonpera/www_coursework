@@ -40,10 +40,14 @@
      {{/if}}
    </div>
    <span style="font-size:30px;cursor:pointer;" onclick="openNav()">&#9776; Menu</span>
+   {{#if session.updated}}
+    <h3>Update successful!<h3>
+   {{/if}}
 <h1>My profile</h1>
 <h3>
   <form action="/user/update" method="post">
     Your username: <input type="text" name="username" value={{session.username}}>
+    <input type="submit" onclick="return confirm('Are you sure?')" value="Change username"/>
   </form>
 </h3>
 <h3>

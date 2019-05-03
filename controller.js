@@ -131,6 +131,7 @@ exports.unregister = function(req, res, next){
   res.redirect('/logout');
 }
 
+//Updates users username or password to database
 exports.update_user = function(req, res, next){
   var username = req.body.username;
   var password = req.body.password;
@@ -152,7 +153,7 @@ exports.update_user = function(req, res, next){
             console.log("Username change successful.");
             //Remember to change session username as well.
             req.session.username = username;
-            req.flash('info', 'Username change successful!');
+            req.session.updated = true;
             res.redirect('/user/profile');
           });
         }
@@ -163,7 +164,7 @@ exports.update_user = function(req, res, next){
         User.updateOne({username: req.session.username}, {password: hash}, function(err, result){
           if(err){return console.log(err)}
           console.log("Password change successful.");
-          req.flash('info', 'Password change successful!');
+          req.session.updated = true;
           res.redirect('/user/profile');
         });
       });
@@ -174,4 +175,10 @@ exports.update_user = function(req, res, next){
     console.log("Username or password invalid.")
     res.redirect('/user/profile');
   }
+}
+
+//Renders admin page that only an admin can see. Admins can view and modify
+//other users' data on this page.
+exports.admin = function(req, res, next){
+  res.end('toimii');
 }

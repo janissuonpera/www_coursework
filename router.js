@@ -38,6 +38,9 @@ router.post('/user',[check('username').isLength({min: 5}).trim().escape(),
                       check('password').isLength({min: 3}).trim().escape(),
                       controller.log_in_action]);
 
+//Catches get request to admin page, where an admin can view and modify user data
+router.get('/admin-page', controller.admin);
+
 
 //Catching all other routes and sending 404 not found
 router.get('*', function(req, res){
