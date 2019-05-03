@@ -1,4 +1,5 @@
 # Change history (descending order from newest to oldest):
+- User info page works completely. Users can update their username, password and can unregister.
 - Users can now unregister
 - Added roles to DB and views. Menu now only shows certain things according to your role
 - MVC structure and MongoDB somewhat working. Template engine also in use.
