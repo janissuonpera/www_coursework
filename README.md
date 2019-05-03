@@ -9,3 +9,6 @@
 - Used create-react-app to create front end in folder 'client'
 - Created server.js as driver file
 - Initialized git and npm
+
+#Note-to-self:
+- Check that not just anyone can use get routes to delete things from db!!!!!
