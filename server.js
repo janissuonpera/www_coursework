@@ -14,6 +14,14 @@ app.engine('hbs', hbs.express4());
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/views'));
+//Register helper for handlebars
+hbs.registerHelper("equals", function(string1 ,string2, options) {
+    if (string1 === string2) {
+        return options.fn(this);
+    } else {
+        return options.inverse(this);
+    }
+});
 
 //Use middleware
 app.use(bodyParser.json())

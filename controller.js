@@ -153,9 +153,12 @@ exports.update_user = function(req, res, next){
             console.log("Username change successful.");
             //Remember to change session username as well.
             req.session.username = username;
-            req.session.updated = true;
+            req.session.message = "Update successful!";
             res.redirect('/user/profile');
           });
+        }else{
+          req.session.message = "Username already taken!";
+          res.redirect('/user/profile')
         }
       });
     }else if(password){
@@ -164,7 +167,7 @@ exports.update_user = function(req, res, next){
         User.updateOne({username: req.session.username}, {password: hash}, function(err, result){
           if(err){return console.log(err)}
           console.log("Password change successful.");
-          req.session.updated = true;
+          req.session.message = "Update successful!";
           res.redirect('/user/profile');
         });
       });
@@ -181,7 +184,37 @@ exports.update_user = function(req, res, next){
 //other users' data on this page.
 exports.admin = function(req, res, next){
   User.find({}, function(err, users){
-    console.log(users);
     res.render('admin-page.hbs', {session: req.session, users: users});
   });
+}
+
+//Called when admin updates user data in the /admin-pages route
+exports.admin_update = function(req, res, next){
+  var username = req.body.username;
+  var old_username = req.body.old_username;
+  var role = req.body.role;
+
+  const errors = validationResult(req);
+  //Check for username validation done in router file
+  if(username && errors.isEmpty()){
+    //Check that username is not taken
+    User.findOne({username: username}, (err, user)=>{
+      if(err){return console.log(err)}
+      //If username is not already taken, in other words it's not found in db.
+      if(!user){
+        //Change username to the one specified in the post request
+        User.updateOne({ username: old_username }, { username: username }, function(err, result) {
+          if(err){return console.log(err)}
+          console.log("Username change successful.");
+          req.session.message = "Update successful!";
+          res.redirect('/admin-page');
+        });
+      }else{
+        req.session.message = "Username already taken!";
+        res.redirect('/admin-page')
+      }
+    });
+  }else if(role){
+
+  }
 }

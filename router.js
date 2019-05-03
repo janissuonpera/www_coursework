@@ -41,11 +41,16 @@ router.post('/user',[check('username').isLength({min: 5}).trim().escape(),
 //Catches get request to admin page, where an admin can view and modify user data
 router.get('/admin-page', controller.admin);
 
+//Catches updates about users made by admins on admin-page
+router.post('/admin-page/update', [check('username').isLength({min: 5}).trim().escape(),
+                                  controller.admin_update]);
 
 //Catching all other routes and sending 404 not found
 router.get('*', function(req, res){
   res.writeHead(404, { 'Content-Type': 'text/plain' });
   res.end('Not found! Try /user');
 });
+
+
 
 module.exports = router;

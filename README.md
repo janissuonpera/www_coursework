@@ -1,4 +1,5 @@
 # Change history (descending order from newest to oldest):
+- Admins can now rename users and change their roles
 - User info page works completely. Users can update their username, password and can unregister.
 - Users can now unregister
 - Added roles to DB and views. Menu now only shows certain things according to your role

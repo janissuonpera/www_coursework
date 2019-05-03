@@ -40,8 +40,8 @@
      {{/if}}
    </div>
    <span style="font-size:30px;cursor:pointer;" onclick="openNav()">&#9776; Menu</span>
-   {{#if session.updated}}
-    <h3>Update successful!<h3>
+   {{#if session.message}}
+    <h3>{{session.message}}<h3>
    {{/if}}
 <h1>My profile</h1>
 <h3>
