@@ -65,9 +65,11 @@
             <option value="admin">Admin</option>
           {{/equals}}
         </select>
+        <input type="hidden" name="username" value={{this.username}}>
         <input type="submit" onclick="return confirm('Are you sure?')" value="Change role"/>
       </form>
-      <form action="/admin-page/update" method="get">
+      <form action="/admin-page/delete" method="post">
+        <input type="hidden" name="username" value={{this.username}}>
         <input
           type="submit"
           onclick="return confirm('Are you sure?')"

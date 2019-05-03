@@ -193,10 +193,9 @@ exports.admin_update = function(req, res, next){
   var username = req.body.username;
   var old_username = req.body.old_username;
   var role = req.body.role;
-
   const errors = validationResult(req);
   //Check for username validation done in router file
-  if(username && errors.isEmpty()){
+  if(username && (errors.isEmpty() || errors.array()[0].value == undefined)){
     //Check that username is not taken
     User.findOne({username: username}, (err, user)=>{
       if(err){return console.log(err)}
@@ -209,12 +208,39 @@ exports.admin_update = function(req, res, next){
           req.session.message = "Update successful!";
           res.redirect('/admin-page');
         });
+      //If admin wants to change role instead of name
+      }else if(role){
+        User.updateOne({ username: username }, { role: role }, function(err, result) {
+          if(err){return console.log(err)}
+          console.log("Role change successful.");
+          req.session.message = "Update successful!";
+          res.redirect('/admin-page');
+        });
       }else{
         req.session.message = "Username already taken!";
-        res.redirect('/admin-page')
+        res.redirect('/admin-page');
       }
     });
-  }else if(role){
+  }else{
+    console.log(errors.array());
+    req.session.message = "Update failed!";
+    res.redirect('/admin-page');
+  }
+}
 
+//Called when admin wants to remove a user's account from database
+exports.admin_delete = function(req, res, next){
+  const errors = validationResult(req);
+  var username = req.body.username;
+  if(errors.isEmpty()){
+    User.deleteOne({username: username}, function(err){
+      if(err){return console.log(err)}
+    });
+    console.log("User deleted");
+    req.session.message = "Deletion successful!";
+    res.redirect('/admin-page');
+  }else{
+    req.session.message = "Deletion failed!";
+    res.redirect('/admin-page');
   }
 }

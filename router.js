@@ -43,7 +43,12 @@ router.get('/admin-page', controller.admin);
 
 //Catches updates about users made by admins on admin-page
 router.post('/admin-page/update', [check('username').isLength({min: 5}).trim().escape(),
+                                   check('old_username').isLength({min: 5}).trim().escape(),
                                   controller.admin_update]);
+
+//Route for when an admin wishes to remove a user's account from the database
+router.post('/admin-page/delete', [check('username').isLength({min: 5}).trim().escape(),
+                                  controller.admin_delete]);
 
 //Catching all other routes and sending 404 not found
 router.get('*', function(req, res){
