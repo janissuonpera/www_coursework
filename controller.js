@@ -89,6 +89,7 @@ exports.log_in_action = function(req, res, next){
         bcrypt.compare(password, user.password, function(err, result){
           if(result){
             req.session.logged_in = true;
+            req.session.username = username;
             //Grant different access rights depending on role in db
             if(user.role == 'registered'){
               req.session.registered = true;
@@ -115,4 +116,20 @@ exports.log_in_action = function(req, res, next){
 exports.log_out = function(req, res, next){
   req.session.destroy(function (err){console.log(err)});
   res.redirect('/');
+}
+
+//Renders page where users can view their profile information
+exports.profile = function(req, res, next){
+  res.render('profile.hbs');
+}
+
+//Removes user from db and destroys session
+exports.unregister = function(req, res, next){
+  User.deleteOne({username: req.session.username}, function(err){
+    if(err){
+      console.log(err);
+    }
+  });
+  //Destroys session and logs user out. After that the user does not exist anymore
+  res.redirect('/logout');
 }

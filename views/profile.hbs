@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Profile</title>
+  <link rel="stylesheet" type="text/css" href="/view_style.css">
+</head>
+
+     <body>
+     <script>
+       var open=false;
+       function openNav() {
+         if(!open){
+           document.getElementById("navbar").style.width = "250px";
+           open=true;
+         }else{
+           open=false;
+           closeNav();
+         }
+       }
+
+       function closeNav() {
+         open=false;
+         document.getElementById("navbar").style.width = "0";
+       }
+     </script>
+
+   <div id="navbar" class="sidenav">
+     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+     <a href="/">Front page</a>
+     <a href="/user">Log in</a>
+     <a href="/contanct">Contact</a>
+   </div>
+   <span style="font-size:30px;cursor:pointer;" onclick="openNav()">&#9776; Menu</span>
+<h1>My profile</h1>
+<h3>-------------------</h3>
+<form action="/user/unregister" method="get">
+  <input type="submit" onclick="return confirm('Are you sure?')" value="Unregister account"/>
+</form>
+</body>
+</html>

@@ -15,8 +15,14 @@ router.get('*', function(req, res, next){
 //Front page of the application, 5 ects version
 router.get('/', controller.front_page);
 
-//Log out router
+//Route for logging out
 router.get('/logout', controller.log_out);
+
+//Route for viewing profile
+router.get('/user/profile', controller.profile);
+
+//Route for unregistering
+router.get('/user/unregister', controller.unregister);
 
 //Catch /users/new_user route and use controller.create_user to add new user to db
 router.get('/user/new_user', controller.create_user);
