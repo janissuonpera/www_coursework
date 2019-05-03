@@ -27,12 +27,41 @@
    <div id="navbar" class="sidenav">
      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
      <a href="/">Front page</a>
-     <a href="/user">Log in</a>
-     <a href="/contanct">Contact</a>
+     {{#if session.registered}}
+       <a href="/movies">Movies</a>
+       <a href="/user/profile">Profile</a>
+       {{#if session.admin}}
+         <a href="/admin-page">Admin page</a>
+       {{/if}}
+     {{/if}}
+     <a href="/contact">Contact</a>
+     {{#if session.logged_in}}
+       <a href="/logout">Logout</a>
+     {{/if}}
    </div>
    <span style="font-size:30px;cursor:pointer;" onclick="openNav()">&#9776; Menu</span>
 <h1>My profile</h1>
-<h3>-------------------</h3>
+<h3>
+  <form action="/user/update" method="post">
+    Your username: <input type="text" name="username" value={{session.username}}>
+  </form>
+</h3>
+<h3>
+  Your current role:
+  {{#if session.admin}}
+    administrator
+  {{else}}
+    {{#if session.registered}}
+      registered
+    {{/if}}
+  {{/if}}
+</h3>
+<form action="/user/update" method="post">
+  <input type="password" name="password">
+  <input type="submit" onclick="return confirm('Are you sure?')" value="Change password"/>
+</form>
+<br>
+<br>
 <form action="/user/unregister" method="get">
   <input type="submit" onclick="return confirm('Are you sure?')" value="Unregister account"/>
 </form>

@@ -5,13 +5,6 @@ const { check, validationResult } = require('express-validator/check');
 //Importing the controller from controller.js
 const controller = require('./controller');
 
-//Catch all routes and attach user credentials and admin status
-router.get('*', function(req, res, next){
-  res.locals.user = req.user || null;
-  res.locals.admin = req.admin || null;
-  next();
-});
-
 //Front page of the application, 5 ects version
 router.get('/', controller.front_page);
 
@@ -32,6 +25,11 @@ router.post('/user/new_user', [check('username').isLength({ min: 5 }).trim().esc
                                 check('password').isLength({ min: 3 }).trim().escape(),
                                 controller.add_users]);
 
+//Catches update request to user route
+router.post('/user/update', [check('username').isLength({min: 5}).trim().escape(),
+                      check('password').isLength({min: 3}).trim().escape(),
+                      controller.update_user])
+
 //Page for logging in
 router.get('/user', controller.log_in_page);
 
@@ -39,6 +37,7 @@ router.get('/user', controller.log_in_page);
 router.post('/user',[check('username').isLength({min: 5}).trim().escape(),
                       check('password').isLength({min: 3}).trim().escape(),
                       controller.log_in_action]);
+
 
 //Catching all other routes and sending 404 not found
 router.get('*', function(req, res){

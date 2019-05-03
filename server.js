@@ -5,6 +5,7 @@ const hbs = require('express-hbs');
 const helmet = require('helmet');
 const router = require('./router');
 const session = require('express-session');
+const flash = require('flash');
 
 //Initialize express app
 const app = express();
@@ -18,12 +19,14 @@ app.use(express.static(__dirname + '/views'));
 //Use middleware
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
-
 app.use(session({
   secret: 'keyboard cat',
   resave: true,
   saveUninitialized: true
 }))
+//Simple flash messages for express
+app.use(flash());
+
 
 app.use("/", router);
 

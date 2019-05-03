@@ -17,8 +17,7 @@ const saltRounds = 10;
 
 //Renders a view for the front page
 exports.front_page = function(req, res, next){
-  res.render('front_page.hbs', {registered: req.session.registered, admin: req.session.admin,
-                                logged_in: req.session.logged_in});
+  res.render('front_page.hbs', {session: req.session});
 }
 
 //Renders a view with form for creating a new user account
@@ -120,16 +119,59 @@ exports.log_out = function(req, res, next){
 
 //Renders page where users can view their profile information
 exports.profile = function(req, res, next){
-  res.render('profile.hbs');
+  res.render('profile.hbs', {session: req.session});
 }
 
 //Removes user from db and destroys session
 exports.unregister = function(req, res, next){
   User.deleteOne({username: req.session.username}, function(err){
-    if(err){
-      console.log(err);
-    }
+    if(err){return console.log(err)}
   });
   //Destroys session and logs user out. After that the user does not exist anymore
   res.redirect('/logout');
+}
+
+exports.update_user = function(req, res, next){
+  var username = req.body.username;
+  var password = req.body.password;
+
+  //Checking that middleware validators in router.js caught no errors.
+  const errors = validationResult(req);
+
+  //Instead of erros.isEmpty(), check that at least one parameter is validated
+  //because the other one might be undefined if the user only wants to update one
+  if(errors.array().length<2){
+    if(username){
+      User.findOne({username: username}, (err, user)=>{
+        if(err){return console.log(err)}
+        //If username is not already taken, in other words it's not found in db.
+        if(!user){
+          //Change username to the one specified in the post request
+          User.updateOne({ username: req.session.username }, { username: username }, function(err, result) {
+            if(err){return console.log(err)}
+            console.log("Username change successful.");
+            //Remember to change session username as well.
+            req.session.username = username;
+            req.flash('info', 'Username change successful!');
+            res.redirect('/user/profile');
+          });
+        }
+      });
+    }else if(password){
+      bcrypt.hash(password, saltRounds, function(err, hash) {
+        if(err){return console.log(err)}
+        User.updateOne({username: req.session.username}, {password: hash}, function(err, result){
+          if(err){return console.log(err)}
+          console.log("Password change successful.");
+          req.flash('info', 'Password change successful!');
+          res.redirect('/user/profile');
+        });
+      });
+    }else{
+      res.redirect('/profile');
+    }
+  }else{
+    console.log("Username or password invalid.")
+    res.redirect('/user/profile');
+  }
 }
