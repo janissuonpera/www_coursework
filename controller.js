@@ -180,5 +180,8 @@ exports.update_user = function(req, res, next){
 //Renders admin page that only an admin can see. Admins can view and modify
 //other users' data on this page.
 exports.admin = function(req, res, next){
-  res.end('toimii');
+  User.find({}, function(err, users){
+    console.log(users);
+    res.render('admin-page.hbs', {session: req.session, users: users});
+  });
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Profile</title>
+  <title>Admin</title>
   <link rel="stylesheet" type="text/css" href="/view_style.css">
 </head>
 
@@ -43,35 +43,30 @@
    {{#if session.updated}}
     <h3>Update successful!<h3>
    {{/if}}
-<h1>My profile</h1>
-<h3>
-  <form action="/user/update" method="post">
-    Your username: <input type="text" name="username" value={{session.username}}>
-    <input type="submit" onclick="return confirm('Are you sure?')" value="Change username"/>
-  </form>
-</h3>
-<h3>
-  Your current role:
-  {{#if session.admin}}
-    administrator
-  {{else}}
-    {{#if session.registered}}
-      registered
-    {{/if}}
-  {{/if}}
-</h3>
-<form action="/user/update" method="post">
-  <input type="password" name="password">
-  <input type="submit" onclick="return confirm('Are you sure?')" value="Change password"/>
-</form>
-<br>
-<br>
-<form action="/user/unregister" method="get">
-  <input
-    type="submit"
-    style="background:red;width:200px;height:35px;font-size:20px;"
-    onclick="return confirm('Are you sure?')"
-    value="Unregister account"/>
-</form>
+<h1>Manage users</h1>
+  <ul>
+  {{#each users}}
+
+    <li>
+      <form action="/user/admin_update" method="post">
+        Username: <input type="text" name="username" value={{this.username}}>
+        <input type="submit" onclick="return confirm('Are you sure?')" value="Change username"/>
+      </form>
+      <form action="/user/admin_update" method="post">
+        Role: {{this.role}}
+        <input type="submit" onclick="return confirm('Are you sure?')" value="Change role"/>
+      </form>
+      <form action="/user/admin_update" method="get">
+        <input
+          type="submit"
+          onclick="return confirm('Are you sure?')"
+          style="background:red;width:150px;height:35px;font-size:20px;"
+          value="Delete user"/>
+      </form>
+    </li>
+    <br>
+    <br>
+  {{/each}}
+  </ul>
 </body>
 </html>
