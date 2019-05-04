@@ -1,4 +1,5 @@
 # Change history (descending order from newest to oldest):
+- System will now remind users if they have not payed their membership fee.
 - Admins can now delete users from the database
 - Admins can now rename users and change their roles
 - User info page works completely. Users can update their username, password and can unregister.

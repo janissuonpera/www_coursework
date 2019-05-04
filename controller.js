@@ -89,6 +89,9 @@ exports.log_in_action = function(req, res, next){
           if(result){
             req.session.logged_in = true;
             req.session.username = username;
+            if(user.membership_payed == true){
+              req.session.payed = true;
+            }
             //Grant different access rights depending on role in db
             if(user.role == 'registered'){
               req.session.registered = true;
@@ -242,5 +245,24 @@ exports.admin_delete = function(req, res, next){
   }else{
     req.session.message = "Deletion failed!";
     res.redirect('/admin-page');
+  }
+}
+
+//Called when user pays for their membership. Changes their membership_payed status
+//in the db
+exports.pay_membership = function(req, res, next){
+  const errors = validationResult(req);
+  if(errors.isEmpty()){
+    User.updateOne({username: req.session.username}, {membership_payed: true}, function(err, result){
+      if(err){return console.log(err)}
+      console.log("Membership payed successfully!");
+      req.session.message = "Membership payed!";
+      req.session.payed = true;
+      res.redirect('/user/profile');
+    })
+  }else{
+    console.log("Membership payment failed!");
+    req.session.message = "Membership payment failed!";
+    res.redirect('/user/profile');
   }
 }

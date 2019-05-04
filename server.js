@@ -26,6 +26,7 @@ hbs.registerHelper("equals", function(string1 ,string2, options) {
 //Use middleware
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
+app.use(helmet());
 app.use(session({
   secret: 'keyboard cat',
   resave: true,
