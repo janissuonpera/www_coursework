@@ -20,6 +20,11 @@ exports.front_page = function(req, res, next){
   res.render('front_page.hbs', {session: req.session});
 }
 
+//Renders a view for movies page where a list of movies is displayed
+exports.movies = function(req, res, next){
+  res.render('movies.hbs', {session: req.session});
+}
+
 //Renders a view with form for creating a new user account
 exports.create_user = function(req, res, next) {
   res.render('create_user');
@@ -47,7 +52,7 @@ exports.add_users = function(req, res, next){
       }else{
         bcrypt.hash(password, saltRounds, function(err, hash) {
           //Generated hash is saved to the database instead of the actual password
-          var new_user = new User({ username: username, password: hash, role: "registered"});
+          var new_user = new User({ username: username, password: hash, role: "registered", membership_payed:false});
           new_user.save(function (err) {
             if (err) return console.error(err);
             res.render('create_user', {message: "User created successfully!"});
@@ -116,7 +121,7 @@ exports.log_in_action = function(req, res, next){
 
 //Action for logging out. Destroys session and its properties
 exports.log_out = function(req, res, next){
-  req.session.destroy(function (err){console.log(err)});
+  req.session.destroy(function (err){console.log("Error with destroying session.", err)});
   res.redirect('/');
 }
 
@@ -128,7 +133,7 @@ exports.profile = function(req, res, next){
 //Removes user from db and destroys session
 exports.unregister = function(req, res, next){
   User.deleteOne({username: req.session.username}, function(err){
-    if(err){return console.log(err)}
+    if(err){return console.log("Error with deleting user.", err)}
   });
   //Destroys session and logs user out. After that the user does not exist anymore
   res.redirect('/logout');
@@ -147,12 +152,12 @@ exports.update_user = function(req, res, next){
   if(errors.array().length<2){
     if(username){
       User.findOne({username: username}, (err, user)=>{
-        if(err){return console.log(err)}
+        if(err){return console.log("Error with finding user", err)}
         //If username is not already taken, in other words it's not found in db.
         if(!user){
           //Change username to the one specified in the post request
           User.updateOne({ username: req.session.username }, { username: username }, function(err, result) {
-            if(err){return console.log(err)}
+            if(err){return console.log("Error with updating user", err)}
             console.log("Username change successful.");
             //Remember to change session username as well.
             req.session.username = username;
@@ -166,9 +171,9 @@ exports.update_user = function(req, res, next){
       });
     }else if(password){
       bcrypt.hash(password, saltRounds, function(err, hash) {
-        if(err){return console.log(err)}
+        if(err){return console.log("Error with hashing password", err)}
         User.updateOne({username: req.session.username}, {password: hash}, function(err, result){
-          if(err){return console.log(err)}
+          if(err){return console.log("Error with updating user with hashed password", err)}
           console.log("Password change successful.");
           req.session.message = "Update successful!";
           res.redirect('/user/profile');
@@ -201,12 +206,12 @@ exports.admin_update = function(req, res, next){
   if(username && (errors.isEmpty() || errors.array()[0].value == undefined)){
     //Check that username is not taken
     User.findOne({username: username}, (err, user)=>{
-      if(err){return console.log(err)}
+      if(err){return console.log("Error with finding user", err)}
       //If username is not already taken, in other words it's not found in db.
       if(!user){
         //Change username to the one specified in the post request
         User.updateOne({ username: old_username }, { username: username }, function(err, result) {
-          if(err){return console.log(err)}
+          if(err){return console.log("Error with updating username", err)}
           console.log("Username change successful.");
           req.session.message = "Update successful!";
           res.redirect('/admin-page');
@@ -214,7 +219,7 @@ exports.admin_update = function(req, res, next){
       //If admin wants to change role instead of name
       }else if(role){
         User.updateOne({ username: username }, { role: role }, function(err, result) {
-          if(err){return console.log(err)}
+          if(err){return console.log("Error with updating user role", err)}
           console.log("Role change successful.");
           req.session.message = "Update successful!";
           res.redirect('/admin-page');
@@ -237,7 +242,7 @@ exports.admin_delete = function(req, res, next){
   var username = req.body.username;
   if(errors.isEmpty()){
     User.deleteOne({username: username}, function(err){
-      if(err){return console.log(err)}
+      if(err){return console.log("Error with deleting user", err)}
     });
     console.log("User deleted");
     req.session.message = "Deletion successful!";
@@ -254,7 +259,7 @@ exports.pay_membership = function(req, res, next){
   const errors = validationResult(req);
   if(errors.isEmpty()){
     User.updateOne({username: req.session.username}, {membership_payed: true}, function(err, result){
-      if(err){return console.log(err)}
+      if(err){return console.log("Error with updating users membership_payed", err)}
       console.log("Membership payed successfully!");
       req.session.message = "Membership payed!";
       req.session.payed = true;

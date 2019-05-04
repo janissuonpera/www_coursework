@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Log in</title>
+  <link rel="stylesheet" type="text/css" href="/view_style.css">
+</head>
+
+     <body>
+     <script>
+       var open=false;
+       function openNav() {
+         if(!open){
+           document.getElementById("navbar").style.width = "250px";
+           open=true;
+         }else{
+           open=false;
+           closeNav();
+         }
+       }
+
+       function closeNav() {
+         open=false;
+         document.getElementById("navbar").style.width = "0";
+       }
+     </script>
+
+     <div id="navbar" class="sidenav">
+       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+       <a href="/">Front page</a>
+       {{#unless session.logged_in}}
+         <a href="/user">Log in</a>
+       {{/unless}}
+       {{#if session.registered}}
+         <a href="/movies">Movies</a>
+         <a href="/user/profile">Profile</a>
+         {{#if session.admin}}
+           <a href="/admin-page">Admin page</a>
+         {{/if}}
+       {{/if}}
+       {{#if session.logged_in}}
+         <a href="/logout">Logout</a>
+       {{/if}}
+     </div>
+     <span style="font-size:30px;cursor:pointer;" onclick="openNav()">&#9776; Menu</span>
+
+  <h1>Owner's favourite movies:</h1>
+  <ul>
+    <li>Lord of the Rings: Return of the King</li>
+    <li>The Godfather</li>
+    <li>Seven</li>
+    <li>Interstellar</li>
+    <li>American History X</li>
+    <li>Gladiator</li>
+    <li>The departed</li>
+  </ul>
+
+</body>
+</html>

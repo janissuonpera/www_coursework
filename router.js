@@ -48,6 +48,9 @@ router.post('/user',[check('username').isLength({min: 5}).trim().escape(),
                       check('password').isLength({min: 3}).trim().escape(),
                       controller.log_in_action]);
 
+//Route for rendering movies page. Only for registered users
+router.get('/movies', [auth.is_registered, controller.movies]);
+
 //Catches get request to admin page, where an admin can view and modify user data
 router.get('/admin-page', [auth.is_admin, controller.admin]);
 

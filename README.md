@@ -1,4 +1,7 @@
 # Change history (descending order from newest to oldest):
+- Ran into a problem with vagrant ports. Need to connect to host 192.168.33.10 instead of localhost for server
+- OR connect to vagrant using: vagrant ssh -- -L 5000:localhost:5000
+- 
 - System will now remind users if they have not payed their membership fee.
 - Admins can now delete users from the database
 - Admins can now rename users and change their roles

@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const hbs = require('express-hbs');
 const helmet = require('helmet');
 const router = require('./router');
+const api = require('./api/api')
 const session = require('express-session');
 
 //Initialize express app
@@ -33,7 +34,7 @@ app.use(session({
   saveUninitialized: true
 }))
 
-
+app.use("/api", api);
 app.use("/", router);
 
 //Using port 5000 because create-react-app uses port 3000
