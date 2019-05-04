@@ -103,6 +103,7 @@ exports.add_user = function(req, res, next){
         })
       }
       else{
+        //If user exists, return appropriate message as json
         if(user){
           res.status(409).json({
             Error: "Username already taken!",
@@ -146,4 +147,61 @@ exports.add_user = function(req, res, next){
       })
     }
   });
+}
+
+//Called when updating a specific user's data
+exports.update_user = function(req, res, next){
+  var username = req.body.username;
+  var password = req.body.password;
+
+  //Checking that middleware validators caught no errors.
+  const errors = validationResult(req);
+  //Check that no errors and user at least specified one field to update
+  if(errors.isEmpty() && (username || password)){
+    //Check if user wants to update username
+    if(username){
+      //Check that username is not already taken by someone else
+      User.findOne({username: username}, (err, user)=>{
+        if(err){
+          res.status(400).json({
+            message: "Error occurred!",
+            links:{
+              all_users_url: 'http://localhost:5000/api/users'
+            }
+          })
+        }
+        //If username is not already taken, in other words it's not found in db.
+        if(!user){
+          //Change username to the one specified in the post request
+          User.updateOne({ username: req.session.username }, { username: username }, function(err, result) {
+            if(err){return console.log("Error with updating user", err)}
+            console.log("Username change successful.");
+            //Remember to change session username as well.
+            req.session.username = username;
+            req.session.message = "Update successful!";
+            res.redirect('/user/profile');
+          });
+        }else{
+          res.status(409).json({
+            message: "Username already taken!",
+            links:{
+              all_users_url: 'http://localhost:5000/api/users'
+            }
+          })
+        }
+      });
+    }
+    //Check if user wants to update password
+    if(password){
+
+    }
+  }else{
+    res.status(400).json({
+      message: "Error occurred!",
+      links:{
+        all_users_url: 'http://localhost:5000/api/users'
+      }
+    })
+  }
+
 }

@@ -17,6 +17,8 @@ router.post('/users', [check('username').isLength({min: 5}).trim().escape(),
                       api_controller.add_user]);
 
 //Patch request to API to update user data
-//router.patch('users/:name', api_controller.update_user);
+router.patch('/users/:name', [check('username').isLength({min: 5}).trim().escape().optional(),
+                             check('password').isLength({min: 3}).trim().escape().optional(),
+                             api_controller.update_user]);
 
 module.exports = router;
