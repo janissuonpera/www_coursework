@@ -10,7 +10,7 @@
     "server": "nodemon dev.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "populate": "mongoimport --jsonArray --db www_coursework --collection users --file populate.json",
+    "populate": "mongoimport --jsonArray --db www_coursework --collection users --file populate/populate.json",
     "prod": "node production.js"
   },
   "repository": {

@@ -22,7 +22,7 @@ exports.login = function(req, res, next){
   var path = 'http://localhost:5000/';
   //Checking that middleware validators caught no errors.
   const errors = validationResult(req);
-
+  console.log(errors.array())
   if(errors.isEmpty()){
     //Checks if user exists in database
     User.findOne({username: username}, (err, user)=>{
@@ -304,14 +304,6 @@ exports.update_user = function(req, res, next){
                   }
                   console.log("Username change successful.");
                 });
-              }else{
-                res.status(409).json({
-                  message: "Username already taken!",
-                  links:{
-                    all_users_url: 'http://localhost:5000/api/users'
-                  }
-                })
-                return;
               }
             });
           }

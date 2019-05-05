@@ -6,7 +6,7 @@
     "membership_payed": true
   },
   {
-    "username": "Boss",
+    "username": "TheBoss",
     "password": "$2y$12$cvDAdN8dcYl70J9.GsMZdOTZCItz1gZUnjv9y0FiybrO/byzwcViW",
     "role": "admin",
     "membership_payed": true
@@ -26,7 +26,7 @@
   {
     "username": "Janis",
     "password": "$2y$12$cvDAdN8dcYl70J9.GsMZdOTZCItz1gZUnjv9y0FiybrO/byzwcViW",
-    "role": "registered",
+    "role": "admin",
     "membership_payed": true
   },
   {
