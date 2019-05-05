@@ -1,4 +1,5 @@
 # Change history (descending order from newest to oldest):
+- React ready. Editing package.json files and run files for different specs.
 - Implemented log in / log out to React.
 - JWT Authentication works perfectly. Users can only edit their own data. Admins can edit everything and add users via REST API.
 - Ran into a problem with vagrant ports. Need to connect to host 192.168.33.10 instead of localhost for server
