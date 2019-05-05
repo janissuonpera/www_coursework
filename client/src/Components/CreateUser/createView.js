@@ -40,11 +40,10 @@ class LoginView extends Component {
     })
     .then(res => res.json())
     .then(response => {
-      if(response.status!==200){
-        alert("User creation failed. Please, try again!");
-      }
       if(response.message === "New user created!"){
         alert("User created successfully!");
+      }else{
+        alert("User creation failed!");
       }
     })
     .catch(error => {

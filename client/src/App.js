@@ -6,6 +6,7 @@ import CreateButton from './Components/CreateUser/createButton';
 import MainMenu from './Components/Menu/mainMenu';
 import MovieView from './Components/Movies/movieView';
 import ProfileView from './Components/Profile/profileView';
+import AdminView from './Components/AdminPage/adminView';
 
 class App extends Component {
   state = {
@@ -112,6 +113,12 @@ class App extends Component {
           />
         </div>
 
+        <div hidden={this.state.view!=="adminpage"} className="AdminPage">
+          <AdminView
+            token={this.state.token}
+            updateData={this.updateData}
+          />
+        </div>
       </div>
     );
   }

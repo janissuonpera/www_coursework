@@ -121,7 +121,7 @@ exports.log_in_action = function(req, res, next){
 
 //Action for logging out. Destroys session and its properties
 exports.log_out = function(req, res, next){
-  req.session.destroy(function (err){console.log("Error with destroying session.", err)});
+  req.session.destroy(function (err){console.log(err)});
   res.redirect('/');
 }
 
@@ -149,7 +149,7 @@ exports.update_user = function(req, res, next){
 
   //Instead of erros.isEmpty(), check that at least one parameter is validated
   //because the other one might be undefined if the user only wants to update one
-  if(errors.array().length<2){
+  if(errors.isEmpty()){
     if(username){
       User.findOne({username: username}, (err, user)=>{
         if(err){return console.log("Error with finding user", err)}
@@ -183,7 +183,7 @@ exports.update_user = function(req, res, next){
       res.redirect('/profile');
     }
   }else{
-    console.log("Username or password invalid.")
+    console.log("Username or password invalid.", errors.array())
     res.redirect('/user/profile');
   }
 }
