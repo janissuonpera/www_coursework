@@ -153,7 +153,7 @@ exports.add_user = function(req, res, next){
   var password = req.body.password;
   //Check if JWT is from an admin. Only admins can add users via REST API for
   //security reasons.
-  var authenticated = (req.body.authData.role == "admin");
+  var authenticated = (req.authData.role == "admin");
   if(authenticated){
     //Check if username already exists in db
     User.findOne({username: username}, function(err, user){
@@ -233,8 +233,8 @@ exports.update_user = function(req, res, next){
   var username = req.body.username;
   var password = req.body.password;
   //Check if JWT is from an admin or the correct user.
-  var authenticated = (req.body.authData.role == "admin" ||
-                        req.body.authData.username == param_username);
+  var authenticated = (req.authData.role == "admin" ||
+                        req.authData.username == param_username);
 
   if(authenticated){
     //Checking that middleware validators caught no errors.

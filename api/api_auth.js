@@ -1,7 +1,9 @@
 /*
 ======================================================================
 For creating a new user with a POST request or updating a user with PATCH request
-in the REST API, you need a JSON Web Token for authentication.
+in the REST API, you need a JSON Web Token for authentication. Only admins can
+add new users via REST API for security reasons. Users can only update their own
+user data via PATCH requests. Admins can update everyones data.
 ======================================================================
 */
 var express = require('express')
@@ -16,10 +18,6 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 //Create a model from imported user_schema
 var User = mongoose.model('user', model.user_schema);
-
-//Import bcrypt
-const bcrypt = require('bcryptjs');
-const saltRounds = 10;
 
 //Read JWT and attach it to the request
 exports.read_JWT = function(req, res, next){
