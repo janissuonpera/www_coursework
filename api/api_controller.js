@@ -53,7 +53,7 @@ exports.login = function(req, res, next){
               })
             });
           }else{
-            res.status(409).json({
+            res.status(401).json({
               Error: "Incorrect password!",
               links:{
                 all_users_url: 'http://localhost:5000/api/users'
@@ -62,7 +62,7 @@ exports.login = function(req, res, next){
           }
         });
       }else{
-        res.status(409).json({
+        res.status(401).json({
           Error: "Username does not exist!",
           links:{
             all_users_url: 'http://localhost:5000/api/users'
@@ -122,7 +122,6 @@ exports.single_user = function(req, res, next){
       })
     }
     else{
-      console.log(user)
       if(user){
         res.status(200).json({
           user: {
@@ -240,23 +239,47 @@ exports.update_user = function(req, res, next){
     //Checking that middleware validators caught no errors.
     const errors = validationResult(req);
     //Check that no errors and user at least specified one field to update
-    if(errors.isEmpty() && (username || password)){
-      //Check if user wants to update username
-      if(username){
-        //Check that username is not already taken by someone else
-        User.findOne({username: username}, (err, user)=>{
-          if(err){
-            res.status(400).json({
-              message: "Error occurred!",
-              links:{
-                all_users_url: 'http://localhost:5000/api/users'
+    if(errors.isEmpty() && (username || password || req.body.role)){
+
+      //Check that parameter username exists
+      User.findOne({username: param_username}, (err, user2)=>{
+        if(err){
+          res.status(400).json({
+            message: "Error occurred!",
+            links:{
+              all_users_url: 'http://localhost:5000/api/users'
+            }
+          })
+          return;
+        }
+        if(!user2){
+          res.status(400).json({
+            message: "Username not found!",
+            links:{
+              all_users_url: 'http://localhost:5000/api/users'
+            }
+          })
+          return;
+        }else{
+          //Check if admin wants to update role for a user
+          if(req.body.role && req.authData.role == 'admin'){
+            User.updateOne({username: param_username}, {role: req.body.role}, function(err, result){
+              if(err){
+                res.status(400).json({
+                  message: "Error occurred with updating role!",
+                  links:{
+                    all_users_url: 'http://localhost:5000/api/users'
+                  }
+                })
+                return;
               }
-            })
+              console.log("Role change successful.");
+            });
           }
-          //If username is not already taken, in other words it's not found in db.
-          if(!user){
-            //Change username to the one specified in the post request
-            User.updateOne({ username: param_username}, { username: username }, function(err, result) {
+          //Check if user wants to update username
+          if(username){
+            //Check that username is not already taken by someone else
+            User.findOne({username: username}, (err, user)=>{
               if(err){
                 res.status(400).json({
                   message: "Error occurred!",
@@ -264,57 +287,70 @@ exports.update_user = function(req, res, next){
                     all_users_url: 'http://localhost:5000/api/users'
                   }
                 })
+                return;
               }
-              console.log("Username change successful.");
-              res.status(200).json({
-                message: "Username updated!",
-                links:{
-                  all_users_url: 'http://localhost:5000/api/users'
-                }
-              })
+              //If username is not already taken, in other words it's not found in db.
+              if(!user){
+                //Change username to the one specified in the post request
+                User.updateOne({ username: param_username}, { username: username }, function(err, result) {
+                  if(err){
+                    res.status(400).json({
+                      message: "Error occurred!",
+                      links:{
+                        all_users_url: 'http://localhost:5000/api/users'
+                      }
+                    })
+                    return;
+                  }
+                  console.log("Username change successful.");
+                });
+              }else{
+                res.status(409).json({
+                  message: "Username already taken!",
+                  links:{
+                    all_users_url: 'http://localhost:5000/api/users'
+                  }
+                })
+                return;
+              }
             });
-          }else{
-            res.status(409).json({
-              message: "Username already taken!",
-              links:{
-                all_users_url: 'http://localhost:5000/api/users'
-              }
-            })
           }
-        });
-      }
-      //Check if user wants to update password
-      if(password){
-        //Hash the given password
-        bcrypt.hash(password, saltRounds, function(err, hash) {
-          if(err){
-            res.status(400).json({
-              message: "Error occurred with hashing!",
-              links:{
-                all_users_url: 'http://localhost:5000/api/users'
+          //Check if user wants to update password
+          if(password){
+            //Hash the given password
+            bcrypt.hash(password, saltRounds, function(err, hash) {
+              if(err){
+                res.status(400).json({
+                  message: "Error occurred with hashing!",
+                  links:{
+                    all_users_url: 'http://localhost:5000/api/users'
+                  }
+                })
+                return;
               }
-            })
-          }
-          User.updateOne({username: param_username}, {password: hash}, function(err, result){
-            if(err){
-              res.status(400).json({
-                message: "Error occurred with updating password!",
-                links:{
-                  all_users_url: 'http://localhost:5000/api/users'
+              User.updateOne({username: param_username}, {password: hash}, function(err, result){
+                if(err){
+                  res.status(400).json({
+                    message: "Error occurred with updating password!",
+                    links:{
+                      all_users_url: 'http://localhost:5000/api/users'
+                    }
+                  })
+                  return;
                 }
-              })
+                console.log("Password change successful.");
+              });
+            });
+          }
+          res.status(200).json({
+            message: "Updates successful!",
+            links:{
+              all_users_url: 'http://localhost:5000/api/users'
             }
-            console.log("Password change successful.");
-            res.status(200).json({
-              message: "Password updated!",
-              user: result,
-              links:{
-                all_users_url: 'http://localhost:5000/api/users'
-              }
-            })
-          });
-        });
-      }
+          })
+          return;
+        }
+      })
     }else{
       res.status(400).json({
         message: "Error occurred!",
@@ -322,6 +358,7 @@ exports.update_user = function(req, res, next){
           all_users_url: 'http://localhost:5000/api/users'
         }
       })
+      return;
     }
   }else{
     res.status(401).json({
@@ -330,6 +367,7 @@ exports.update_user = function(req, res, next){
         all_users_url: 'http://localhost:5000/api/users'
       }
     })
+    return;
   }
 
 }

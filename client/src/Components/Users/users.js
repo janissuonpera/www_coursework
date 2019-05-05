@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-//import './users.css';
+import './users.css';
 
 
 //Component for rendering a list of users
@@ -21,7 +21,6 @@ class Users extends Component {
   render(){
     return (
       <div>
-        <h2> Users </h2>
         <ul>
           {this.state.users.map(user =>
             <li key={user.username}>{user.username}</li>

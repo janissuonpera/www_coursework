@@ -34,7 +34,9 @@ app.use(session({
   saveUninitialized: true
 }))
 
+//Catches all requests made to REST API
 app.use("/api", api);
+//Catches all other requests
 app.use("/", router);
 
 //Using port 5000 because create-react-app uses port 3000

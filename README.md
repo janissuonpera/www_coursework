@@ -20,3 +20,4 @@
 
 #Note-to-self:
 - Check that not just anyone can use get routes to delete things from db!!!!!
+- For now, patch requests to API can only update one thing at a time!!
