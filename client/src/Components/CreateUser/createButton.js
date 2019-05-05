@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button'
-import LoginView from './loginView';
+import CreateView from './createView';
 
-class LoginButton extends Component {
+
+class CreateButton extends Component {
   constructor(){
     super();
     this.state = {
@@ -14,10 +15,6 @@ class LoginButton extends Component {
     this.viewElement.current.handleOpen();
   }
 
-  getJWT = (token)=>{
-    this.props.getJWT(token);
-  }
-
   render(){
     return (
       <div>
@@ -27,12 +24,12 @@ class LoginButton extends Component {
               style={{marginTop:"10px"}}
               onClick={this.openLogin()}
             >
-              Log in
+              Create User
         </Button>
-        <LoginView ref={this.viewElement} getJWT={this.getJWT}/>
+        <CreateView ref={this.viewElement} />
       </div>
     );
   }
 }
 
-export default LoginButton;
+export default CreateButton;

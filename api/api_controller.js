@@ -150,80 +150,67 @@ exports.single_user = function(req, res, next){
 exports.add_user = function(req, res, next){
   var username = req.body.username;
   var password = req.body.password;
-  //Check if JWT is from an admin. Only admins can add users via REST API for
-  //security reasons.
-  var authenticated = (req.authData.role == "admin");
-  if(authenticated){
-    //Check if username already exists in db
-    User.findOne({username: username}, function(err, user){
+  //Check if username already exists in db
+  User.findOne({username: username}, function(err, user){
 
-      const errors = validationResult(req);
+    const errors = validationResult(req);
 
-      //Check that fields are validated
-      if(errors.isEmpty()){
-        //If error, return correct status and error message
-        if(err){
-          res.status(400).json({
-            error: err.message,
-            links:{
-              all_users_url: 'http://localhost:5000/api/users'
-            }
-          })
-        }
-        else{
-          //If user exists, return appropriate message as json
-          if(user){
-            res.status(409).json({
-              Error: "Username already taken!",
-              links:{
-                all_users_url: 'http://localhost:5000/api/users'
-              }
-            });
-          }else{
-            //If username is free, hash the given password and save new user to db
-            bcrypt.hash(password, saltRounds, function(err, hash) {
-              //Generated hash is saved to the database instead of the actual password
-              var new_user = new User({ username: username, password: hash, role: "registered", membership_payed: false});
-              new_user.save(function (err) {
-                if (err){
-                  res.status(400).json({
-                    error: err.message,
-                    links:{
-                      all_users_url: 'http://localhost:5000/api/users'
-                    }
-                  })
-                }else{
-                  res.status(200).json({
-                    message: "New user created!",
-                    user: new_user,
-                    links:{
-                      all_users_url: 'http://localhost:5000/api/users'
-                    }
-                  })
-                }
-              });
-            });
-          }
-
-        }
-      }else{
+    //Check that fields are validated
+    if(errors.isEmpty()){
+      //If error, return correct status and error message
+      if(err){
         res.status(400).json({
-          message: "Invalid input!",
+          error: err.message,
           links:{
             all_users_url: 'http://localhost:5000/api/users'
           }
         })
       }
-    });
-  }else{
-    res.status(401).json({
-      error: "Only admins can add users via REST API!",
-      links:{
-        all_users_url: 'http://localhost:5000/api/users'
-      }
-    })
-  }
+      else{
+        //If user exists, return appropriate message as json
+        if(user){
+          res.status(409).json({
+            Error: "Username already taken!",
+            links:{
+              all_users_url: 'http://localhost:5000/api/users'
+            }
+          });
+        }else{
+          //If username is free, hash the given password and save new user to db
+          bcrypt.hash(password, saltRounds, function(err, hash) {
+            //Generated hash is saved to the database instead of the actual password
+            var new_user = new User({ username: username, password: hash, role: "registered", membership_payed: false});
+            new_user.save(function (err) {
+              if (err){
+                res.status(400).json({
+                  error: err.message,
+                  links:{
+                    all_users_url: 'http://localhost:5000/api/users'
+                  }
+                })
+              }else{
+                res.status(200).json({
+                  message: "New user created!",
+                  user: new_user,
+                  links:{
+                    all_users_url: 'http://localhost:5000/api/users'
+                  }
+                })
+              }
+            });
+          });
+        }
 
+      }
+    }else{
+      res.status(400).json({
+        message: "Invalid input!",
+        links:{
+          all_users_url: 'http://localhost:5000/api/users'
+        }
+      })
+    }
+  });
 }
 
 //Called when updating a specific user's data

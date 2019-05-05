@@ -26,12 +26,12 @@ class LoginView extends Component {
     this.setState({ open: false });
   };
 
-  //Uses fetch post to send user login data to REST API. Receives JWT as response
+  //Uses fetch post to send new user data to REST API. Receives JWT as response
   //and stores it in the local storage.
-  handleLogIn = (e) => {
+  handleJoin = (e) => {
     var data = {username: this.state.username, password: this.state.password}
     e.preventDefault();
-    fetch('/api/login', {
+    fetch('/api/users', {
       method: 'POST',
       body: JSON.stringify(data),
       headers:{
@@ -40,15 +40,16 @@ class LoginView extends Component {
     })
     .then(res => res.json())
     .then(response => {
-      this.setState({JWT:response.JWT})
-      this.props.getJWT(response.JWT);
-      if(response.Error){
-        alert("Log in failed. Please, try again!");
+      if(response.status!==200){
+        alert("User creation failed. Please, try again!");
+      }
+      if(response.message === "New user created!"){
+        alert("User created successfully!");
       }
     })
     .catch(error => {
       console.error('Error:', error);
-      alert("Log in failed. Please, try again!");
+      alert("User creation failed. Please, try again!");
     });
     this.handleClose();
   }
@@ -65,10 +66,10 @@ class LoginView extends Component {
         onClose={this.handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Log in</DialogTitle>
+        <DialogTitle id="form-dialog-title">Create user</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To log into the movie club site, please enter your log in information!
+            To join the movie club site, please enter your desired information!
           </DialogContentText>
           <TextField
             margin="dense"
@@ -93,8 +94,8 @@ class LoginView extends Component {
           <Button onClick={this.handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={this.handleLogIn} color="primary">
-            Log in
+          <Button onClick={this.handleJoin} color="primary">
+            Create user
           </Button>
         </DialogActions>
       </Dialog>

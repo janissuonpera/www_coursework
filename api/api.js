@@ -18,8 +18,7 @@ router.get('/users', api_controller.users_list);
 router.get('/users/:name', api_controller.single_user);
 
 //Post request to API to add new user to db. Only for admins. Authenticated with JWT
-router.post('/users', [api_auth.read_JWT, api_auth.verify_JWT,
-                      check('username').isLength({min: 5}).trim().escape(),
+router.post('/users', [check('username').isLength({min: 5}).trim().escape(),
                       check('password').isLength({min: 3}).trim().escape(),
                       api_controller.add_user]);
 

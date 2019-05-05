@@ -1,5 +1,5 @@
 # Change history (descending order from newest to oldest):
-- Scandic letters like ä,ö dont seem to work with everything. Avoid using them.
+- Implemented log in / log out to React.
 - JWT Authentication works perfectly. Users can only edit their own data. Admins can edit everything and add users via REST API.
 - Ran into a problem with vagrant ports. Need to connect to host 192.168.33.10 instead of localhost for server
 - OR connect to vagrant using: vagrant ssh -- -L 5000:localhost:5000
@@ -21,3 +21,4 @@
 #Note-to-self:
 - Check that not just anyone can use get routes to delete things from db!!!!!
 - For now, patch requests to API can only update one thing at a time!!
+- Scandic letters like ä,ö dont seem to work with everything. Avoid using them.
