@@ -31,7 +31,7 @@ exports.login = function(req, res, next){
         bcrypt.compare(password, user.password, function(err, result){
           if(result){
             console.log("Signed a Json Web Token!");
-            jwt.sign({username: username, role:user.role}, 'secretkey420', (err, token) => {
+            jwt.sign({username: username, role:user.role, payed:user.membership_payed}, 'secretkey420', (err, token) => {
               if(err){
                 res.status(400).json({
                   Error: "Error occurred with signing JWT!",
@@ -123,14 +123,26 @@ exports.single_user = function(req, res, next){
     }
     else{
       if(user){
-        res.status(200).json({
-          user: {
-            username: user.username,
-            role: user.role,
-            membership_payed: user.membership_payed,
-            links: {
-              all_users_url: 'http://localhost:5000/api/users'
-            }
+        jwt.sign({username: user.username, role:user.role}, 'secretkey420', (err, token) => {
+          if(err){
+            res.status(400).json({
+              Error: "Error occurred with signing JWT!",
+              links:{
+                all_users_url: 'http://localhost:5000/api/users'
+              }
+            });
+          }else{
+            res.status(200).json({
+              user: {
+                username: user.username,
+                role: user.role,
+                membership_payed: user.membership_payed,
+                JWT: token,
+                links: {
+                  all_users_url: 'http://localhost:5000/api/users'
+                }
+              }
+            });
           }
         });
       }else{
@@ -218,6 +230,7 @@ exports.update_user = function(req, res, next){
   var param_username = req.params.name;
   var username = req.body.username;
   var password = req.body.password;
+  var fee_payed = (req.body.cardname && req.body.cardnum && req.body.expdate && req.body.cvv)
   //Check if JWT is from an admin or the correct user.
   var authenticated = (req.authData.role == "admin" ||
                         req.authData.username == param_username);
@@ -226,7 +239,7 @@ exports.update_user = function(req, res, next){
     //Checking that middleware validators caught no errors.
     const errors = validationResult(req);
     //Check that no errors and user at least specified one field to update
-    if(errors.isEmpty() && (username || password || req.body.role)){
+    if(errors.isEmpty() && (username || password || req.body.role || fee_payed)){
 
       //Check that parameter username exists
       User.findOne({username: param_username}, (err, user2)=>{
@@ -329,6 +342,21 @@ exports.update_user = function(req, res, next){
               });
             });
           }
+          //Check if user wants to pay membership fee
+          if(fee_payed){
+            User.updateOne({username: param_username}, {membership_payed: true}, function(err, result){
+              if(err){
+                res.status(400).json({
+                  message: "Error occurred with updating fee status!",
+                  links:{
+                    all_users_url: 'http://localhost:5000/api/users'
+                  }
+                })
+                return;
+              }
+              console.log("Membership payed successfully!");
+            })
+          }
           res.status(200).json({
             message: "Updates successful!",
             links:{
@@ -357,4 +385,42 @@ exports.update_user = function(req, res, next){
     return;
   }
 
+}
+
+//Called when deleting user from db.
+exports.delete_user = function(req, res, next){
+  var param_username = req.params.name;
+  //Check if JWT is from an admin or the correct user.
+  var authenticated = (req.authData.role == "admin" ||
+                        req.authData.username == param_username);
+
+  if(authenticated){
+    User.deleteOne({username: param_username}, function(err){
+      if(err){
+        res.status(400).json({
+          message: "Error occurred!",
+          links:{
+            all_users_url: 'http://localhost:5000/api/users'
+          }
+        })
+        return;
+      }else{
+        res.status(200).json({
+          message: "Removal successful!",
+          links:{
+            all_users_url: 'http://localhost:5000/api/users'
+          }
+        })
+        return;
+      }
+    });
+  }else{
+    res.status(401).json({
+      error: "Not the same user or an admin!",
+      links:{
+        all_users_url: 'http://localhost:5000/api/users'
+      }
+    })
+    return;
+  }
 }

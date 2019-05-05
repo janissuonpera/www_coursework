@@ -14,6 +14,7 @@ class MainMenu extends Component {
     }
   }
 
+  //Opens menu
   handleClick = event => {
     this.setState({
       anchorEl: event.currentTarget,
@@ -23,10 +24,12 @@ class MainMenu extends Component {
     });
   };
 
+  //Closes menu
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
 
+  //Logs user out. Clears everything from localStorage and resets all states
   handleLogout = () =>{
     localStorage.clear();
     this.setState({
@@ -35,7 +38,28 @@ class MainMenu extends Component {
       username: null,
       role: null,
     })
+    //Resets state in parent as well
     this.props.logOut();
+  }
+
+  //Renders front page
+  handleFP = () =>{
+    this.props.changeView("frontpage");
+  }
+
+  //Renders a list of movies
+  handleMovies = () =>{
+    this.props.changeView("moviepage");
+  }
+
+  //Renders a list of movies
+  handleProfile = () =>{
+    this.props.changeView("profilepage");
+  }
+
+  //Renders page for managing users
+  handleAdmin = () =>{
+    this.props.changeView("adminpage");
   }
 
   render(){
@@ -59,9 +83,9 @@ class MainMenu extends Component {
           onClose={this.handleClose}
         >
         <MenuItem onClick={this.handleFP}>Front Page</MenuItem>
-        {this.state.role!==null ? <MenuItem onClick={this.handleClose}>Movies</MenuItem> : null}
-        {this.state.role!==null ? <MenuItem onClick={this.handleClose}>Profile</MenuItem> : null}
-        {this.state.role==="admin" ? <MenuItem onClick={this.handleClose}>Admin page</MenuItem> : null }
+        {this.state.role!==null ? <MenuItem onClick={this.handleMovies}>Movies</MenuItem> : null}
+        {this.state.role!==null ? <MenuItem onClick={this.handleProfile}>Profile</MenuItem> : null}
+        {this.state.role==="admin" ? <MenuItem onClick={this.handleAdmin}>Admin page</MenuItem> : null }
         {this.state.role!==null ? <MenuItem onClick={this.handleLogout}>Logout</MenuItem> : null}
       </Menu>
       </div>
