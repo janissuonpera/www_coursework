@@ -6,10 +6,12 @@
   "scripts": {
     "client-install": "cd client && npm install",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "server": "nodemon server.js",
+    "start": "node dev.js",
+    "server": "nodemon dev.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "populate": "mongoimport --jsonArray --db www_coursework --collection users --file populate.json",
+    "prod": "node production.js"
   },
   "repository": {
     "type": "git",

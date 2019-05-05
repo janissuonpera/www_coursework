@@ -1,18 +1,36 @@
 [
   {
-    "username": "Hurja-Daniel-san",
+    "username": "Wild-Daniel",
     "password": "$2y$12$cvDAdN8dcYl70J9.GsMZdOTZCItz1gZUnjv9y0FiybrO/byzwcViW",
     "role": "registered",
     "membership_payed": true
   },
   {
-    "username": "Janis",
+    "username": "Boss",
     "password": "$2y$12$cvDAdN8dcYl70J9.GsMZdOTZCItz1gZUnjv9y0FiybrO/byzwcViW",
     "role": "admin",
     "membership_payed": true
   },
   {
     "username": "Petteri",
+    "password": "$2y$12$cvDAdN8dcYl70J9.GsMZdOTZCItz1gZUnjv9y0FiybrO/byzwcViW",
+    "role": "registered",
+    "membership_payed": false
+  },
+  {
+    "username": "Samurai Jack",
+    "password": "$2y$12$cvDAdN8dcYl70J9.GsMZdOTZCItz1gZUnjv9y0FiybrO/byzwcViW",
+    "role": "registered",
+    "membership_payed": false
+  },
+  {
+    "username": "Janis",
+    "password": "$2y$12$cvDAdN8dcYl70J9.GsMZdOTZCItz1gZUnjv9y0FiybrO/byzwcViW",
+    "role": "registered",
+    "membership_payed": true
+  },
+  {
+    "username": "Dummy guy",
     "password": "$2y$12$cvDAdN8dcYl70J9.GsMZdOTZCItz1gZUnjv9y0FiybrO/byzwcViW",
     "role": "registered",
     "membership_payed": false

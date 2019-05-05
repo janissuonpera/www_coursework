@@ -40,10 +40,18 @@ class LoginView extends Component {
     })
     .then(res => res.json())
     .then(response => {
-      this.setState({JWT:response.JWT})
-      this.props.getJWT(response.JWT);
       if(response.Error){
         alert("Log in failed. Please, try again!");
+      }else{
+        var jwt = require("jsonwebtoken");
+        jwt.sign({username: response.username, role:response.role, payed:response.payed}, 'secretkey420', (err, token) => {
+          if(err){
+            console.log(err);
+          }else{
+            this.setState({JWT:token})
+            this.props.getJWT(token);
+          }
+        });
       }
     })
     .catch(error => {

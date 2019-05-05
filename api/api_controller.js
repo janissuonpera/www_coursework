@@ -44,8 +44,9 @@ exports.login = function(req, res, next){
               res.set('Location', path + 'api/users/' + username);
               res.json({
                 message: "Login succesful! JSON Web Token granted!",
-                JWT: token,
+                role: user.role,
                 username: username,
+                payed: user.membership_payed,
                 links:{
                   user_url: 'http://localhost:5000/api/users/'+username,
                   all_users_url: 'http://localhost:5000/api/users'
@@ -137,7 +138,6 @@ exports.single_user = function(req, res, next){
                 username: user.username,
                 role: user.role,
                 membership_payed: user.membership_payed,
-                JWT: token,
                 links: {
                   all_users_url: 'http://localhost:5000/api/users'
                 }

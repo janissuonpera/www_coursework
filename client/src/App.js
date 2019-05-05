@@ -17,10 +17,6 @@ class App extends Component {
     view: "frontpage"
   };
 
-  componentDidMount(){
-
-  }
-
   //Gets JWT token from log in button / log in view
   getJWT = (token) => {
     var jwt = require("jsonwebtoken");
